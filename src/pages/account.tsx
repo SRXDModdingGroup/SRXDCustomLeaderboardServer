@@ -50,7 +50,7 @@ const Account: NextPage = () => {
             Either <br />
             Click &quot;Download CFG File&quot; and save the file to &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;<br />
             OR<br />
-            Put this token into the LeaderboardsServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
+            Put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
 
         </>
     )
