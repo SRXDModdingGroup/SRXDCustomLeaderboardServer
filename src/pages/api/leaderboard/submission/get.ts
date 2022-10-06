@@ -46,7 +46,8 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         orderBy: {
             score: "desc"
-        }
+        },
+        take: leaderboardResult.requestSize
     })
 
     leaderboardResult.leaderboardEntries = leaderboardSubmissions.map((e, i) => {
@@ -60,6 +61,9 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
             MetaDataCount: e.metaData.length,            
         } as ILeaderboardEntry;
     })
+
+    leaderboardResult.totalLeaderboardEntries = leaderboardSubmissions.length;
+    leaderboardResult
 
     return res.send(leaderboardResult);
 }
