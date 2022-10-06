@@ -54,7 +54,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  leaderboardEntries LeaderboardEntry[]
+  LeaderboardSubmissions LeaderboardSubmission[]
 }
 
 model VerificationToken {
@@ -69,10 +69,10 @@ model Leaderboard {
   id  String @id @default(cuid())
   key String @unique
 
-  leaderboardEntries LeaderboardEntry[]
+  LeaderboardSubmissions LeaderboardSubmission[]
 }
 
-model LeaderboardEntry {
+model LeaderboardSubmission {
   id String @id @default(cuid())
 
   userId String

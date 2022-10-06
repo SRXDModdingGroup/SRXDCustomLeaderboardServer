@@ -70,42 +70,42 @@ const submit = async (req: NextApiRequest, res: NextApiResponse) => {
     
 
     const input = InputValidator.parse(req.body);
-    const leaderboardSubmission = LeaderboardSubmission.from(input);
-    if (!leaderboardSubmission.allowLeaderboardCreation) return res.send("Leaderboard not created.");
+    const inputLeaderboardSubmission = LeaderboardSubmission.from(input);
+    if (!inputLeaderboardSubmission.allowLeaderboardCreation) return res.send("Leaderboard not created.");
 
     const leaderboard = await prisma.leaderboard.upsert({
         where: {
-            key: leaderboardSubmission.key
+            key: inputLeaderboardSubmission.key
         },
         update: {},
         create: {
-            key: leaderboardSubmission.key
+            key: inputLeaderboardSubmission.key
         }
     });
     
-    let leaderboardEntry = await prisma.leaderboardEntry.findFirst({
+    let leaderboardSubmission = await prisma.leaderboardSubmission.findFirst({
         where: {
             userId: session.user.id,
             leaderboardKey: leaderboard.key 
         }
     })
-    if (leaderboardEntry && leaderboardSubmission.submitType === SubmitType.KeepBest && leaderboardEntry.score >= leaderboardSubmission.score) return res.send(leaderboardEntry);
-    leaderboardEntry = await prisma.leaderboardEntry.upsert({
+    if (leaderboardSubmission && inputLeaderboardSubmission.submitType === SubmitType.KeepBest && leaderboardSubmission.score >= inputLeaderboardSubmission.score) return res.send(leaderboardSubmission);
+    leaderboardSubmission = await prisma.leaderboardSubmission.upsert({
         where: {
-            id: leaderboardEntry?.id ?? "-1"
+            id: leaderboardSubmission?.id ?? "-1"
         },
         create: {
-            score: leaderboardEntry?.score ?? leaderboardSubmission.score,
-            metaData: leaderboardEntry?.score ?? leaderboardSubmission.metaData,
+            score: leaderboardSubmission?.score ?? inputLeaderboardSubmission.score,
+            metaData: leaderboardSubmission?.score ?? inputLeaderboardSubmission.metaData,
             leaderboardKey: leaderboard.key,
             userId: session.user.id
         },
         update: {
-            score: leaderboardSubmission.score,
-            metaData: leaderboardSubmission.metaData,
+            score: inputLeaderboardSubmission.score,
+            metaData: inputLeaderboardSubmission.metaData,
         }
     })
-    return res.send(leaderboardEntry);       
+    return res.send(leaderboardSubmission);       
 };
 
 export default submit;
