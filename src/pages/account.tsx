@@ -24,16 +24,34 @@ const Account: NextPage = () => {
         t.refetch()
     }
 
+    const downloadCfgUri = (token: string) => {
+        const output_string = `[General]\nLeaderboardServerAuthCookie = ${token}`
+
+        const blob = new Blob([output_string], {
+            type: 'text/plain'
+        });
+        return window.URL.createObjectURL(blob);
+    }
+
     
     return (
         <>
             <button onClick={() => new_session.mutate()}>New Session Token</button>
+            <br /><br />
             { t.data?.map(e => (
                 <div key={e.id}>
                     <span>Token: &quot;{e.sessionToken}&quot;</span>
+                    <br />
+                    <a href={downloadCfgUri(e.sessionToken)} download="SRXD.CustomLeaderboard.cfg">Download CFG File</a>
+                    <br /><br />
                 </div>
             ))}
-            Put this token into the LeaderboardsServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXDCustomLeaderboard.cfg&quot; to login on your game client.
+            
+            Either <br />
+            Click &quot;Download CFG File&quot; and save the file to &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;<br />
+            OR<br />
+            Put this token into the LeaderboardsServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
+
         </>
     )
 }
