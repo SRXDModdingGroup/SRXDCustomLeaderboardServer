@@ -54,7 +54,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  LeaderboardEntries LeaderboardEntries[]
+  leaderboardEntries LeaderboardEntry[]
 }
 
 model VerificationToken {
@@ -66,16 +66,23 @@ model VerificationToken {
 }
 
 model Leaderboard {
-  id                 String               @id @default(cuid())
-  LeaderboardEntries LeaderboardEntries[]
+  id  String @id @default(cuid())
+  key String @unique
+
+  leaderboardEntries LeaderboardEntry[]
 }
 
-model LeaderboardEntries {
+model LeaderboardEntry {
   id String @id @default(cuid())
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  leaderboardId String
-  leaderboard   Leaderboard @relation(fields: [leaderboardId], references: [id], onDelete: Cascade)
+  leaderboardKey String
+  leaderboard    Leaderboard @relation(fields: [leaderboardKey], references: [key], onDelete: Cascade)
+
+  score    Int
+  metaData Int[]
+
+  submittedAtTime DateTime @default(now())
 }
