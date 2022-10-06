@@ -2,38 +2,39 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerAuthSession } from "server/common/get-server-auth-session";
+import { z } from "zod";
+import { prisma } from "server/db/client";
 
-const submit = async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = await getServerAuthSession({ req, res });
-
-    if (session) {
-        res.send({
-            content:
-        "This is protected content. You can access this content because you are signed in.",
-        });
-    } else {
-        res.send({
-            error:
-        "You must be signed in to view the protected content on this page.",
-        });
-    }
-};
-
-
-export interface ILeaderboardSubmission {
-    key: string;
-    metaData: number[];
-    submitType: SubmitType;
-    submittedAtTime: number;
-    allowLeaderboardCreation: boolean;
+export enum SubmitType
+{
+    KeepBest,
+    Replace
 }
 
+export enum MetadataAccessor {
+    health,
+    buildNumber,
+    exeRevisionNumber,
+    tracklistSize,
+    _progress,
+    _scoreHash,
+    trackDataVersion,
+    streak,
+    fullComboState,
+    tiebreakerScore
+}
+
+export const InputValidator = z.object({
+    key: z.string(),
+    metaData: z.array(z.number()),
+    submitType: z.nativeEnum(SubmitType),
+    submittedAtTime: z.number(),
+    allowLeaderboardCreation: z.boolean()
+})
+
+export type ILeaderboardSubmission = z.infer<typeof InputValidator>
 
 export class LeaderboardSubmission implements ILeaderboardSubmission {
-    constructor(leaderboardSubmission: ILeaderboardSubmission) {
-        Object.assign(this, leaderboardSubmission)
-    }
-
     private get scoreHasher() {
         return Number(process.env.SUBMISSION_SCORE_HASH);
     }
@@ -55,25 +56,56 @@ export class LeaderboardSubmission implements ILeaderboardSubmission {
     submitType = SubmitType.KeepBest;
     submittedAtTime = 0;
     allowLeaderboardCreation = true;
+
+    static from(submission: ILeaderboardSubmission) {
+        const returnVal = new LeaderboardSubmission();
+        Object.assign(returnVal, submission)
+        return returnVal;
+    }
 }
 
-export enum SubmitType
-{
-    KeepBest,
-    Replace
-}
+const submit = async (req: NextApiRequest, res: NextApiResponse) => {
+    const session = await getServerAuthSession({ req, res });
+    if (!session?.user) return res.status(401).send("UNAUTHORIZED");
+    
 
-export enum MetadataAccessor {
-    health,
-    buildNumber,
-    exeRevisionNumber,
-    tracklistSize,
-    _progress,
-    _scoreHash,
-    trackDataVersion,
-    streak,
-    fullComboState,
-    tiebreakerScore
-}
+    const input = InputValidator.parse(req.body);
+    const leaderboardSubmission = LeaderboardSubmission.from(input);
+    if (!leaderboardSubmission.allowLeaderboardCreation) return res.send("Leaderboard not created.");
+
+    const leaderboard = await prisma.leaderboard.upsert({
+        where: {
+            key: leaderboardSubmission.key
+        },
+        update: {},
+        create: {
+            key: leaderboardSubmission.key
+        }
+    });
+    
+    let leaderboardEntry = await prisma.leaderboardEntry.findFirst({
+        where: {
+            userId: session.user.id,
+            leaderboardKey: leaderboard.key 
+        }
+    })
+    if (leaderboardEntry && leaderboardSubmission.submitType === SubmitType.KeepBest && leaderboardEntry.score >= leaderboardSubmission.score) return res.send(leaderboardEntry);
+    leaderboardEntry = await prisma.leaderboardEntry.upsert({
+        where: {
+            id: leaderboardEntry?.id ?? "-1"
+        },
+        create: {
+            score: leaderboardEntry?.score ?? leaderboardSubmission.score,
+            metaData: leaderboardEntry?.score ?? leaderboardSubmission.metaData,
+            leaderboardKey: leaderboard.key,
+            userId: session.user.id
+        },
+        update: {
+            score: leaderboardSubmission.score,
+            metaData: leaderboardSubmission.metaData,
+        }
+    })
+    return res.send(leaderboardEntry);       
+};
 
 export default submit;
