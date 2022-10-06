@@ -33,6 +33,7 @@ const Account: NextPage = () => {
                     <span>Token: &quot;{e.sessionToken}&quot;</span>
                 </div>
             ))}
+            Put this token into the LeaderboardsServerAuthCookie field in &quot;Spin Rhythm/config/SRXDCustomLeaderboard.cfg&quot; to login on your game client.
         </>
     )
 }
