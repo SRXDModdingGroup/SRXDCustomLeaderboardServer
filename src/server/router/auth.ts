@@ -11,11 +11,14 @@ export const authRouter = createRouter()
         }
         return next({ctx: {...ctx, user: ctx.session.user}})
     })
-    .query('getSessions', {
+    .query('getClientSessions', {
         async resolve({ctx}) {
             return await prisma.session.findMany({
                 where: {
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    sessionToken: {
+                        startsWith: "CLIENT-"
+                    }
                 }
             })
         },
@@ -30,18 +33,20 @@ export const authRouter = createRouter()
                     }
                 }
             })
-            if (!client_token_exists) {
-                const key: string = await new Promise((resolve, reject) => {
-                    generateKey("aes", { length: 128 }, (err, data) => {
-                        if (err) {
-                            return reject(err)
-                        }
-                        return resolve(data.export().toString("hex"))
-                    });
-                });
-                const sessionToken = "CLIENT-"+key;
 
-                const expires = new Date();
+            const key: string = await new Promise((resolve, reject) => {
+                generateKey("aes", { length: 128 }, (err, data) => {
+                    if (err) {
+                        return reject(err)
+                    }
+                    return resolve(data.export().toString("hex"))
+                });
+            });
+            const sessionToken = "CLIENT-"+key;
+            const expires = new Date();
+
+            if (!client_token_exists) {
+               
                 expires.setFullYear(expires.getFullYear() + 1)
                 
                 return await prisma.session.create({
@@ -52,6 +57,15 @@ export const authRouter = createRouter()
                     }
                 })
             }
-            return client_token_exists;
+
+            return prisma.session.update({
+                where: {
+                    id: client_token_exists.id
+                },
+                data: {
+                    sessionToken,
+                    expires
+                }
+            });
         }
     });
