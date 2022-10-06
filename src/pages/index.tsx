@@ -26,7 +26,7 @@ const Home: NextPage = () => {
                         session.data?.user &&
                         <TechnologyCard
                             name="Account"
-                            description="Manage your game authentication tokens here."
+                            description="Click here to get started! Manage your game authentication tokens here."
                             documentation="/account"
                         />
                     }
