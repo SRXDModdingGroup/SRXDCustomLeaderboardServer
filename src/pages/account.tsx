@@ -35,7 +35,7 @@ const Account: NextPage = () => {
 
     
     return (
-        <>
+        <div className="pt-16">
             <button onClick={() => new_session.mutate()}>New Session Token</button>
             <br /><br />
             { t.data?.map(e => (
@@ -52,7 +52,7 @@ const Account: NextPage = () => {
             OR<br />
             Put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
 
-        </>
+        </div>
     )
 }
 export default Account;

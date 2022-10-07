@@ -17,10 +17,10 @@ const Home: NextPage = () => {
             </Head>
 
             <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
-                <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
-                    <span className="text-purple-300">SRXD</span>CustomLeaderboard
+                <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
+                    Custom <span className="text-primary">Leaderboard</span>
                 </h1>
-                <p className="text-2xl text-gray-700">{session.data?.user ? `Welcome, ${session.data.user.name}` : "You're not logged in"}</p>
+                <p className="text-2xl">{session.data?.user ? `Welcome, ${session.data.user.name}` : "You're not logged in"}</p>
                 <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
                     {
                         session.data?.user &&
@@ -59,11 +59,11 @@ const TechnologyCard = ({
 }: TechnologyCardProps) => {
     return (
         <section className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl duration-500 motion-safe:hover:scale-105">
-            <h2 className="text-lg text-gray-700">{name}</h2>
-            <p className="text-sm text-gray-600">{description}</p>
+            <h2 className="text-lg">{name}</h2>
+            <p className="text-sm">{description}</p>
             <Link href={documentation}>
                 <a
-                    className="m-auto mt-3 w-fit text-sm text-violet-500 underline decoration-dotted underline-offset-2"
+                    className="m-auto mt-3 w-fit text-sm text-primary underline decoration-dotted underline-offset-2"
                 >
                     Click Here!
                 </a>
