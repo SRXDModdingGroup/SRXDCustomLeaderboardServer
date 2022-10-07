@@ -19,10 +19,6 @@ const Account: NextPage = () => {
             ctx.invalidateQueries(["auth.getClientSessions"]);
         },
     });
-    if (new_session.status = "success") {
-        console.log(new_session)
-        t.refetch()
-    }
 
     const downloadCfgUri = (token: string) => {
         const output_string = `[General]\nLeaderboardServerAuthCookie = ${token}`
