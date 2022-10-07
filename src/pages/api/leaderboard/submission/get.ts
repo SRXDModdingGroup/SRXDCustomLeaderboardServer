@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerAuthSession } from "server/common/get-server-auth-session";
+import { getServerAuthSession, getServerAuthSessionClient } from "server/common/get-server-auth-session";
 import { z } from "zod";
 import { prisma } from "server/db/client";
 
@@ -32,7 +32,7 @@ const zLeaderboardResult = z.object({
 export type ILeaderboardResult = z.infer<typeof zLeaderboardResult>;
 
 const get = async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = await getServerAuthSession({ req, res });
+    const session = await getServerAuthSessionClient({ req, res });
 
     const leaderboardResult = zLeaderboardResult.parse(req.body);
 

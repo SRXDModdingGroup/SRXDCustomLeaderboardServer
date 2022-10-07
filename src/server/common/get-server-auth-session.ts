@@ -11,3 +11,12 @@ export const getServerAuthSession = async (ctx: {
 }) => {
     return await unstable_getServerSession(ctx.req, ctx.res, nextAuthOptions);
 };
+
+export const getServerAuthSessionClient: typeof getServerAuthSession = async (ctx) => {
+    console.log(ctx.req.headers);
+    const valid_auth_index = Object.keys(ctx.req.cookies).find(e => e.endsWith("next-auth.session-token"));
+    const auth_key = valid_auth_index ? ctx.req.cookies[valid_auth_index] : ctx.res.getHeader("X-API-Key") as string | undefined;
+    ctx.req.cookies["next-auth.session-token"] = auth_key;
+    ctx.req.cookies["__Secure-next-auth.session-token"] = auth_key;
+    return await getServerAuthSession(ctx);
+}

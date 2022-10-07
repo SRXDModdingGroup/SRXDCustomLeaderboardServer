@@ -1,7 +1,7 @@
 // Example of a restricted endpoint that only authenticated users can access from https://next-auth.js.org/getting-started/example
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerAuthSession } from "server/common/get-server-auth-session";
+import { getServerAuthSession, getServerAuthSessionClient } from "server/common/get-server-auth-session";
 import { z } from "zod";
 import { prisma } from "server/db/client";
 
@@ -65,7 +65,7 @@ export class LeaderboardSubmission implements ILeaderboardSubmission {
 }
 
 const submit = async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = await getServerAuthSession({ req, res });
+    const session = await getServerAuthSessionClient({ req, res });
     if (!session?.user) return res.status(401).send("UNAUTHORIZED");
     
 
