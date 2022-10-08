@@ -65,7 +65,7 @@ const Account: NextPage = () => {
                     - Put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
                 </p>
                 <div className="flex justify-end">
-                    <button onClick={() => new_session.mutate()} className="text-sm text-white bg-primary rounded px-2 py-1 font-semibold uppercase">New Session Token</button>
+                    <button onClick={() => new_session.mutate()} className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">New Session Token</button>
                 </div>                
             </div>
         </div>
