@@ -32,8 +32,11 @@ const Account: NextPage = () => {
     }
 
     return (
-        <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen flex items-center justify-center">
-            <div className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl space-y-3">
+        <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6">
+            <div className="flex flex-col w-full justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
+                <h2 className="text-lg">Account</h2>
+            </div>
+            <div className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
                 <h2 className="text-lg">Session Tokens</h2>
                 <p className="text-sm">
                     <table className="table-fixed w-full text-center border-collapse border" cellPadding="5">
