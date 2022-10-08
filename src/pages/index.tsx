@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
             <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
                 <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
-                    Custom <span className="text-primary">Leaderboard</span>
+                    Private <span className="text-primary">Leaderboard</span> for SRXD
                 </h1>
                 <p className="text-2xl">{session.data?.user ? `Welcome, ${session.data.user.name}` : "You're not logged in"}</p>
                 <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
@@ -34,6 +34,11 @@ const Home: NextPage = () => {
                         name={session.data?.user ? "Log Out" : "Log In"}
                         description="Authentication"
                         documentation={`/api/auth/${session.data?.user ? "signout" : "signin"}`}
+                    />
+                    <TechnologyCard
+                        name="Download Mod"
+                        description="Download the custom leaderboard client mod for SRXD."
+                        documentation="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll"
                     />
                 </div>
                 {/* <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
