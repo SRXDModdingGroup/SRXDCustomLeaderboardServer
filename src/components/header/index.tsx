@@ -75,9 +75,7 @@ const Header: FC = () => {
                                     {item.name}
                                 </Disclosure.Button>
                             ))}
-                            <Disclosure.Button>
-                                <ThemeSwitch><div className="block px-6 py-2 w-full">Toggle Theme</div></ThemeSwitch>
-                            </Disclosure.Button>
+                            <ThemeSwitch><div className="block px-6 py-2 w-full">Toggle Theme</div></ThemeSwitch>
                         </div>
                     </Disclosure.Panel>
                 </>
