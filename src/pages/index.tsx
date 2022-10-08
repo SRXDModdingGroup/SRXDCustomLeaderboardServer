@@ -20,7 +20,7 @@ const Home: NextPage = () => {
                 <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
                     Private <span className="text-primary">Leaderboard</span> for SRXD
                 </h1>
-                <p className="text-2xl">{session.data?.user ? `Welcome, ${session.data.user.name}` : "You're not logged in"}</p>
+                <p className="text-2xl">{session.data?.user ? `Welcome, ${session.data.user.name}` : "Login to get started!"}</p>
                 <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
                     {
                         session.data?.user &&
@@ -31,8 +31,8 @@ const Home: NextPage = () => {
                         />
                     }
                     <TechnologyCard
-                        name={session.data?.user ? "Log Out" : "Log In"}
-                        description="Authentication"
+                        name={session.data?.user ? "Logout" : "Login / Sign Up"}
+                        description="Login / sign up to get started!"
                         documentation={`/api/auth/${session.data?.user ? "signout" : "signin"}`}
                     />
                     <TechnologyCard
