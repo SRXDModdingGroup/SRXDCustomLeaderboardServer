@@ -16,7 +16,7 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
+            <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-16">
                 <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
                     Private <span className="text-primary">Leaderboard</span> for SRXD
                 </h1>
