@@ -32,7 +32,7 @@ const Account: NextPage = () => {
     }
 
     return (
-        <div className="mx-auto max-w-6xl px-3 sm:px-6 min-h-screen flex items-center justify-center">
+        <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen flex items-center justify-center">
             <div className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl space-y-3">
                 <h2 className="text-lg">Session Tokens</h2>
                 <p className="text-sm">
