@@ -18,7 +18,7 @@ const Header: FC = () => {
     ]
 
     return (
-        <Disclosure as="nav" className="fixed sm:scroll0:bg-primary top-0 left-0 right-0 transition-all z-50 shadow-lg dark:bg-[#1C1B22] bg-white">
+        <Disclosure as="nav" className="fixed top-0 left-0 right-0 transition-all z-50 shadow-lg scroll0:shadow-none dark:bg-[#1C1B22] bg-white">
             {({open}) => (
                 <>
                     <div className={`mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 sm:border-b-0 border-b-[1px] border-white/30`}>

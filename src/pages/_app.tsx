@@ -10,6 +10,7 @@ import type { Session } from "next-auth";
 import "../styles/globals.css";
 import Header from "components/header";
 import { ThemeProvider } from "next-themes";
+import ScrollHandler from "components/scroll_handler";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
@@ -19,6 +20,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <SessionProvider session={session}>
             <ThemeProvider attribute="class">
                 <>
+                    <ScrollHandler />
                     <Header></Header>
                     <Component {...pageProps} />
                 </>
