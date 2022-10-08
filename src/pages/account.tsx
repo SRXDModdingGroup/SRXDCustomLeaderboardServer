@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { trpc } from "utils/trpc";
 
 const Account: NextPage = () => {
@@ -14,14 +14,6 @@ const Account: NextPage = () => {
             router.push("/api/auth/signin");
         }
     }, [router,session])
-
-    // const [user, setUser] = useState({...session.data?.user});
-    // useEffect(() => {
-    //     if (session.status === "authenticated" && !user?.name) {
-    //         console.log(user);
-    //         setUser({...session.data?.user});
-    //     }
-    // }, [session]);
 
     const update_user = trpc.useMutation(["auth.updateUser"]);
 
@@ -49,15 +41,26 @@ const Account: NextPage = () => {
         return window.URL.createObjectURL(blob);
     }
     
+    const submitForm = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const vals = Object.assign(
+            {}, 
+            ...Object.values(e.target)
+                .filter(e => e.name)
+                .map(e => ({ [e.name]: e.value }))
+        );
+        update_user.mutate(vals);
+    };
+
     return (
         <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6">
-            <div className="flex flex-col w-full justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
+            <form onSubmit={(e) => submitForm(e)} className="flex flex-col w-full justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
                 <h2 className="text-lg">Account</h2>
-                {/* Name: <input type="text" value={user?.name as string} /> */}
-                {/* <div className="flex justify-end">
-                    <button onClick={() => session.data?.user && update_user.mutate(session.data.user)} className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">Update User Info</button>
-                </div> */}
-            </div>
+                Name: <input type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
+                <div className="flex justify-end">
+                    <button className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">Update User Info</button>
+                </div>
+            </form>
             <div className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
                 <h2 className="text-lg">Session Tokens</h2>
                 <div className="text-sm">
