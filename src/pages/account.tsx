@@ -90,7 +90,7 @@ const Account: NextPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            { sessions.data ? 
+                            { sessions.data?.length ? 
                                 sessions.data?.map(e => (
                                     <tr key={e.id} className="border">
                                         <td><pre className="overflow-x-auto whitespace-nowrap">{e.sessionToken}</pre></td>
@@ -100,9 +100,7 @@ const Account: NextPage = () => {
                                 )) :
                                 (
                                     <tr className="border">
-                                        <td>Not Yet Created</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td colSpan={3}>Not Yet Created</td>
                                     </tr>
                                 )
                             }
