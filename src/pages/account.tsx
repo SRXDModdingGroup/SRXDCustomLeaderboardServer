@@ -57,7 +57,7 @@ const Account: NextPage = () => {
         <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6">
             <form onSubmit={(e) => submitForm(e)} className="flex flex-col w-full justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
                 <h2 className="text-lg">Account</h2>
-                Name: <input type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
+                Name: <input className="rounded p-3" type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
                 <div className="flex justify-end">
                     <button className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">Update User Info</button>
                 </div>
