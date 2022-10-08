@@ -25,7 +25,7 @@ const Home: NextPage = () => {
                     {
                         session.data?.user &&
                         <TechnologyCard
-                            name="Account"
+                            name="Account / Get Started"
                             description="Click here to get started! Manage your game authentication tokens here."
                             documentation="/account"
                         />
@@ -63,7 +63,7 @@ const TechnologyCard = ({
     documentation,
 }: TechnologyCardProps) => {
     return (
-        <section className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl duration-500 motion-safe:hover:scale-105">
+        <section className="card duration-500 motion-safe:hover:scale-105">
             <h2 className="text-lg">{name}</h2>
             <p className="text-sm">{description}</p>
             <Link href={documentation}>
