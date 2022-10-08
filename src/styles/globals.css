@@ -14,6 +14,6 @@
     }
 
     .action {
-        @apply text-sm text-gray-200 bg-secondary rounded px-2 py-1 font-semibold uppercase hover:text-white hover:shadow-xl transition-all duration-500
+        @apply text-sm text-gray-200 bg-secondary rounded px-2 py-1 font-semibold uppercase hover:text-white hover:shadow-xl transition-all active:shadow-none active:translate-y-0.5
     }
 }
