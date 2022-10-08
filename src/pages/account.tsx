@@ -79,13 +79,22 @@ const Account: NextPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        { sessions.data?.map(e => (
-                            <tr key={e.id} className="border">
-                                <td><pre className="overflow-x-scroll whitespace-nowrap">{e.sessionToken}</pre></td>
-                                <td>{e.expires.toLocaleDateString()}</td>
-                                <td><a className="underline" href={downloadCfgUri(e.sessionToken)} download="SRXD.CustomLeaderboard.cfg">Download</a></td>
-                            </tr>
-                        ))}
+                        { sessions.data ? 
+                            sessions.data?.map(e => (
+                                <tr key={e.id} className="border">
+                                    <td><pre className="overflow-x-scroll whitespace-nowrap">{e.sessionToken}</pre></td>
+                                    <td>{e.expires.toLocaleDateString()}</td>
+                                    <td><a className="underline" href={downloadCfgUri(e.sessionToken)} download="SRXD.CustomLeaderboard.cfg">Download</a></td>
+                                </tr>
+                            )) :
+                            (
+                                <tr className="border">
+                                    <td>Not Yet Created</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            )
+                        }
                     </tbody>
                 </table>                    
                 <div className="flex justify-end">
