@@ -3,6 +3,7 @@ import { Disclosure, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import ThemeSwitch from "./themeswitch";
 
 const Header: FC = () => {
     const session = useSession();
@@ -17,7 +18,7 @@ const Header: FC = () => {
     ]
 
     return (
-        <Disclosure as="nav" className="fixed sm:scroll0:bg-primary top-0 left-0 right-0 transition-all z-50 shadow-lg">
+        <Disclosure as="nav" className="fixed sm:scroll0:bg-primary top-0 left-0 right-0 transition-all z-50 shadow-lg dark:bg-[#1C1B22] bg-white">
             {({open}) => (
                 <>
                     <div className={`mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 sm:border-b-0 border-b-[1px] border-white/30`}>
@@ -41,6 +42,7 @@ const Header: FC = () => {
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
                                     <div className="flex space-x-4">
+                                        
                                         {navigation.map((item) => (
                                             <Link
                                                 key={item.name}
@@ -54,6 +56,7 @@ const Header: FC = () => {
                                                 </a>
                                             </Link>
                                         ))}
+                                        <ThemeSwitch />
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +75,9 @@ const Header: FC = () => {
                                     {item.name}
                                 </Disclosure.Button>
                             ))}
+                            <Disclosure.Button>
+                                <ThemeSwitch><div className="block px-6 py-2 w-full">Toggle Theme</div></ThemeSwitch>
+                            </Disclosure.Button>
                         </div>
                     </Disclosure.Panel>
                 </>
