@@ -1,7 +1,9 @@
-import { GetServerSideProps, NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { refreshSession } from "modules/auth";
+import { getFormValues } from "modules/forms";
+import { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect } from "react";
 import { trpc } from "utils/trpc";
 
 const Account: NextPage = () => {
@@ -15,7 +17,11 @@ const Account: NextPage = () => {
         }
     }, [router,session])
 
-    const update_user = trpc.useMutation(["auth.updateUser"]);
+    const update_user = trpc.useMutation(["auth.updateUser"], {
+        onSuccess() {
+            refreshSession();
+        },
+    });
 
     const sessions = trpc.useQuery(["auth.getClientSessions"]);
     const new_session = trpc.useMutation(["auth.newSession"], {
@@ -43,13 +49,8 @@ const Account: NextPage = () => {
     
     const submitForm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const vals = Object.assign(
-            {}, 
-            ...Object.values(e.target)
-                .filter(e => e.name)
-                .map(e => ({ [e.name]: e.value }))
-        );
-        update_user.mutate(vals);
+
+        update_user.mutate(getFormValues(e));
     };
 
     return (
