@@ -20,7 +20,9 @@ export const authRouter = createRouter()
                 where: {
                     id: ctx.user.id
                 },
-                data: input
+                data: {
+                    ...input
+                } as any
             });
         }
     })
