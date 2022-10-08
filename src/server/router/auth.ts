@@ -11,6 +11,14 @@ export const authRouter = createRouter()
         }
         return next({ctx: {...ctx, user: ctx.session.user}})
     })
+    .mutation("updateUser", {
+        input: z.object({
+            name: z.string().optional().nullable()
+        }),
+        async resolve({ctx}) {
+            console.log(ctx);
+        }
+    })
     .query('getClientSessions', {
         async resolve({ctx}) {
             return await prisma.session.findMany({
