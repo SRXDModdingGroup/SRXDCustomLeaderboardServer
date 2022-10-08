@@ -65,7 +65,7 @@ const Account: NextPage = () => {
                 <h2>Account</h2>
                 Name: <input className="rounded p-3 border-2 border-gray-500 focus:border-secondary outline-none transition-all" type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
                 <div className="flex justify-end">
-                    <button className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">Update User Info</button>
+                    <button className="action">Update User Info</button>
                 </div>
             </form>
             <div className="card gap-3">
@@ -104,7 +104,7 @@ const Account: NextPage = () => {
                     </tbody>
                 </table>                    
                 <div className="flex justify-end">
-                    <button onClick={() => new_session.mutate()} className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">New Session Token</button>
+                    <button onClick={() => new_session.mutate()} className="action">New Session Token</button>
                 </div>                
             </div>
             <div className="card gap-3">

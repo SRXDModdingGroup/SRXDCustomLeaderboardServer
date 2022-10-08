@@ -12,4 +12,8 @@
     .card > h2 {
         @apply text-lg
     }
+
+    .action {
+        @apply text-sm text-gray-200 bg-secondary rounded px-2 py-1 font-semibold uppercase hover:text-white hover:shadow-xl transition-all duration-500
+    }
 }
