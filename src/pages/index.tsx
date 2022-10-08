@@ -23,18 +23,18 @@ const Home: NextPage = () => {
                 <p className="text-2xl">{session.data?.user ? `Welcome, ${session.data.user.name}` : "Login to get started!"}</p>
                 <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
                     {
-                        session.data?.user &&
-                        <TechnologyCard
-                            name="Account / Get Started"
-                            description="Click here to get started! Manage your game authentication tokens here."
-                            documentation="/account"
-                        />
+                        session.data?.user ?
+                            <TechnologyCard
+                                name="Account / Get Started"
+                                description="Click here to get started! Manage your game authentication tokens here."
+                                documentation="/account"
+                            /> :
+                            <TechnologyCard
+                                name="Login / Sign Up"
+                                description="Login / sign up to get started!"
+                                documentation={`/api/auth/signin`}
+                            />
                     }
-                    <TechnologyCard
-                        name={session.data?.user ? "Logout" : "Login / Sign Up"}
-                        description="Login / sign up to get started!"
-                        documentation={`/api/auth/${session.data?.user ? "signout" : "signin"}`}
-                    />
                     <TechnologyCard
                         name="Download Mod"
                         description="Download the custom leaderboard client mod for SRXD."
