@@ -55,49 +55,61 @@ const Account: NextPage = () => {
 
     return (
         <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6">
-            <form onSubmit={(e) => submitForm(e)} className="flex flex-col w-full justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
-                <h2 className="text-lg">Account</h2>
-                Name: <input type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
+            <form onSubmit={(e) => submitForm(e)} className="card gap-3">
+                <h2>Account</h2>
+                Name: <input className="rounded p-3 border-2 border-gray-500 focus:border-secondary outline-none transition-all" type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
                 <div className="flex justify-end">
                     <button className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">Update User Info</button>
                 </div>
             </form>
-            <div className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
-                <h2 className="text-lg">Session Tokens</h2>
-                <div className="text-sm">
-                    <table className="table-fixed w-full text-center border-collapse border" cellPadding="5">
-                        <thead>
-                            <tr>
-                                <th className="w-1/2 sm:w-2/3">
-                                    Token
-                                </th>
-                                <th>
-                                    Expiry
-                                </th>
-                                <th>
-                                    CFG
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            { sessions.data?.map(e => (
+            <div className="card gap-3">
+                <h2>Session Tokens</h2>
+                <table className="table-fixed w-full text-center border-collapse border" cellPadding="5">
+                    <thead>
+                        <tr className="border">
+                            <th className="w-1/2 sm:w-2/3">
+                                Token
+                            </th>
+                            <th>
+                                Expiry
+                            </th>
+                            <th>
+                                CFG
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { sessions.data ? 
+                            sessions.data?.map(e => (
                                 <tr key={e.id} className="border">
                                     <td><pre className="overflow-x-scroll whitespace-nowrap">{e.sessionToken}</pre></td>
                                     <td>{e.expires.toLocaleDateString()}</td>
                                     <td><a className="underline" href={downloadCfgUri(e.sessionToken)} download="SRXD.CustomLeaderboard.cfg">Download</a></td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <br />
-                    Either: <br />
-                    - Click &quot;Download CFG File&quot; and save the file to &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;
-                    <div className="w-full text-center">OR</div>
-                    - Put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
-                </div>
+                            )) :
+                            (
+                                <tr className="border">
+                                    <td>Not Yet Created</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            )
+                        }
+                    </tbody>
+                </table>                    
                 <div className="flex justify-end">
                     <button onClick={() => new_session.mutate()} className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">New Session Token</button>
                 </div>                
+            </div>
+            <div className="card gap-3">
+                <h2>How to Get Started</h2>
+                <pre className="whitespace-pre-wrap">
+                    1. Find your &quot;Spin Rhythm&quot; game folder. (This is usually &quot;C:\Program Files(x86)\Steam\steamapps\common\Spin Rhythm\&quot;) <br />
+                    2. <a className="underline" href="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll">Download</a> the mod and save it to &quot;Spin Rhythm/BepInEx/plugins&quot;<br />
+                    3. Click the &quot;New Session Token&quot; button above.<br />
+                    4. Click &quot;Download&quot; button above under the CFG table and save the file to &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;.<br />
+                    5. (If step 4 doesn&apos;t work) Run the game once with the mod installed and then put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;.
+                </pre>
             </div>
         </div>
     )

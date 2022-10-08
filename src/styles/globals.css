@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .card {
+        @apply flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl
+    }
+    .card > h1 {
+        @apply text-xl
+    }
+    .card > h2 {
+        @apply text-lg
+    }
+}
