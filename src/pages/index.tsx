@@ -1,12 +1,23 @@
+import { Octokit } from "@octokit/rest";
+import { getModReleases } from "modules/github";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useQuery } from "react-query";
 import { trpc } from "../utils/trpc";
+
+const octokit = new Octokit();
+
+
 
 const Home: NextPage = () => {
     const session = useSession();
     const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
+
+    const releases = useQuery("releases", getModReleases);
+
+    const latest_release = releases.data && releases.data[0];
 
     return (
         <>
@@ -15,7 +26,15 @@ const Home: NextPage = () => {
                 <meta name="description" content="SRXDCustomLeaderboard" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            {
+                false && (
+                    <div className="card fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-[#1C1B22]">
+                        <h2>
+                            hi
+                        </h2>
+                    </div>
+                )
+            }
             <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-16">
                 <h1 className="text-5xl font-extrabold mb-6 md:text-[5rem] wrap">
                     Private <span className="text-primary">Leaderboard</span> for SRXD
@@ -37,7 +56,7 @@ const Home: NextPage = () => {
                     }
                     <TechnologyCard
                         name="Download Mod"
-                        description="Download the custom leaderboard client mod for SRXD."
+                        description={`Download the custom leaderboard client mod for SRXD ${latest_release?.tag_name &&`(version ${latest_release.tag_name})`}.`}
                         documentation="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll"
                     />
                 </div>

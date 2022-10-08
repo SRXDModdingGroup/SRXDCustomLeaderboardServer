@@ -1,9 +1,11 @@
 import { refreshSession } from "modules/auth";
 import { getFormValues } from "modules/forms";
+import { getModReleases } from "modules/github";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect } from "react";
+import { useQuery } from "react-query";
 import { trpc } from "utils/trpc";
 
 const Account: NextPage = () => {
@@ -22,6 +24,7 @@ const Account: NextPage = () => {
             refreshSession();
         },
     });
+    
 
     const sessions = trpc.useQuery(["auth.getClientSessions"]);
     const new_session = trpc.useMutation(["auth.newSession"], {
@@ -37,6 +40,9 @@ const Account: NextPage = () => {
             ctx.invalidateQueries(["auth.getClientSessions"]);
         },
     });
+
+    const releases = useQuery("releases", getModReleases);
+    const latest_release = releases.data && releases.data[0];
 
     const downloadCfgUri = (token: string) => {
         const output_string = `[General]\nLeaderboardServerAuthCookie = ${token}`
@@ -105,7 +111,7 @@ const Account: NextPage = () => {
                 <h2>How to Get Started</h2>
                 <pre className="whitespace-pre-wrap">
                     1. Find your &quot;Spin Rhythm&quot; game folder. (This is usually &quot;C:\Program Files(x86)\Steam\steamapps\common\Spin Rhythm\&quot;) <br />
-                    2. <a className="underline" href="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll">Download</a> the mod and save it to &quot;Spin Rhythm/BepInEx/plugins&quot;<br />
+                    2. <a className="underline" href="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll">Download</a> the mod {latest_release?.tag_name &&`(version ${latest_release.tag_name})`} and save it to &quot;Spin Rhythm/BepInEx/plugins&quot;<br />
                     3. Click the &quot;New Session Token&quot; button above.<br />
                     4. Click &quot;Load&quot; button above under the &quot;Open in SRXD&quot; column.
                     5. (If step 4 doesn&apos;t work) Run the game once with the mod installed and then put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;.
