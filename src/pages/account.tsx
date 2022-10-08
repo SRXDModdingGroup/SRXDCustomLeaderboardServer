@@ -1,13 +1,24 @@
 import { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { trpc } from "utils/trpc";
 
 const Account: NextPage = () => {
+    const session = useSession();
+    const router = useRouter();
 
     const ctx = trpc.useContext();
     
     const t = trpc.useQuery(["auth.getClientSessions"]);
     
+    useEffect(()=>{
+        if (session.status === "unauthenticated") {
+            router.push("/api/auth/signin");
+        }
+    },[router,session])
+
+      
     const new_session = trpc.useMutation(["auth.newSession"], {
         onMutate: () => {
             ctx.cancelQuery(["auth.getClientSessions"]);
