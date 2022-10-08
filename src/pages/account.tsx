@@ -84,7 +84,7 @@ const Account: NextPage = () => {
                                 <tr key={e.id} className="border">
                                     <td><pre className="overflow-x-auto whitespace-nowrap">{e.sessionToken}</pre></td>
                                     <td>{e.expires.toLocaleDateString()}</td>
-                                    <td><a className="underline" href={`steam://run/1058830//play token ${e.sessionToken}`}>Load</a></td>
+                                    <td><a className="underline" href={`steam://run/1058830//play undefined token ${e.sessionToken}`}>Load</a></td>
                                 </tr>
                             )) :
                             (
