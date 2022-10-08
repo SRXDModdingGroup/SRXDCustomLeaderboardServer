@@ -65,7 +65,7 @@ const Account: NextPage = () => {
             <Head>
                 Account
             </Head>
-            <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6">
+            <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6 pb-6">
                 <form onSubmit={(e) => submitForm(e)} className="card gap-3">
                     <h2>Account</h2>
                     Name: <input className="rounded p-3 border-2 border-gray-500 focus:border-secondary outline-none transition-all" type="text" name="name" defaultValue={session.data?.user?.name ?? ''} />
