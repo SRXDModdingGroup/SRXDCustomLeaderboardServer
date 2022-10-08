@@ -1,24 +1,31 @@
 import { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "utils/trpc";
 
 const Account: NextPage = () => {
     const session = useSession();
     const router = useRouter();
-
     const ctx = trpc.useContext();
     
-    const t = trpc.useQuery(["auth.getClientSessions"]);
-    
-    useEffect(()=>{
+    useEffect(() => {
         if (session.status === "unauthenticated") {
             router.push("/api/auth/signin");
         }
-    },[router,session])
+    }, [router,session])
 
-      
+    // const [user, setUser] = useState({...session.data?.user});
+    // useEffect(() => {
+    //     if (session.status === "authenticated" && !user?.name) {
+    //         console.log(user);
+    //         setUser({...session.data?.user});
+    //     }
+    // }, [session]);
+
+    const update_user = trpc.useMutation(["auth.updateUser"]);
+
+    const sessions = trpc.useQuery(["auth.getClientSessions"]);
     const new_session = trpc.useMutation(["auth.newSession"], {
         onMutate: () => {
             ctx.cancelQuery(["auth.getClientSessions"]);
@@ -41,29 +48,35 @@ const Account: NextPage = () => {
         });
         return window.URL.createObjectURL(blob);
     }
-
+    
     return (
         <div className="mx-auto max-w-5xl px-3 sm:px-6 min-h-screen pt-20 space-y-6">
             <div className="flex flex-col w-full justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
                 <h2 className="text-lg">Account</h2>
+                {/* Name: <input type="text" value={user?.name as string} /> */}
+                {/* <div className="flex justify-end">
+                    <button onClick={() => session.data?.user && update_user.mutate(session.data.user)} className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">Update User Info</button>
+                </div> */}
             </div>
             <div className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl gap-3">
                 <h2 className="text-lg">Session Tokens</h2>
-                <p className="text-sm">
+                <div className="text-sm">
                     <table className="table-fixed w-full text-center border-collapse border" cellPadding="5">
                         <thead>
-                            <th className="w-1/2 sm:w-2/3">
-                                Token
-                            </th>
-                            <th>
-                                Expiry
-                            </th>
-                            <th>
-                                CFG
-                            </th>
+                            <tr>
+                                <th className="w-1/2 sm:w-2/3">
+                                    Token
+                                </th>
+                                <th>
+                                    Expiry
+                                </th>
+                                <th>
+                                    CFG
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
-                            { t.data?.map(e => (
+                            { sessions.data?.map(e => (
                                 <tr key={e.id} className="border">
                                     <td><pre className="overflow-x-scroll whitespace-nowrap">{e.sessionToken}</pre></td>
                                     <td>{e.expires.toLocaleDateString()}</td>
@@ -77,7 +90,7 @@ const Account: NextPage = () => {
                     - Click &quot;Download CFG File&quot; and save the file to &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot;
                     <div className="w-full text-center">OR</div>
                     - Put this token into the LeaderboardServerAuthCookie field in &quot;Spin Rhythm/BepInEx/config/SRXD.CustomLeaderboard.cfg&quot; to login on your game client after you have ran the game with the mod installed at least once.
-                </p>
+                </div>
                 <div className="flex justify-end">
                     <button onClick={() => new_session.mutate()} className="text-sm text-white bg-secondary rounded px-2 py-1 font-semibold uppercase">New Session Token</button>
                 </div>                
