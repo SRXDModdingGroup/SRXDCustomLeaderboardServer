@@ -35,9 +35,9 @@ const Header: FC = () => {
                                 </Disclosure.Button>
                             </div>
                             <div className="flex flex-1 items-center sm:items-stretch justify-between">
-                                <div className="flex flex-shrink-0 px-3 text-lg items-center text-primary sm:hover:text-secondary transition-all">
+                                <div className="flex flex-shrink-0 px-3 text-lg items-center sm:hover:text-secondary transition-all">
                                     <Link href="/">
-                                        SRXDCustomLeaderboard
+                                        <a><span className="text-primary">SRXD</span>CustomLeaderboard</a>
                                     </Link>
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
