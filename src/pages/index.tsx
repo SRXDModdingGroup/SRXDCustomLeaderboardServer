@@ -1,5 +1,4 @@
-import { Octokit } from "@octokit/rest";
-import { getModReleases } from "modules/github";
+import { getLatestModRelease } from "modules/github";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -9,9 +8,7 @@ import { useQuery } from "react-query";
 const Home: NextPage = () => {
     const session = useSession();
 
-    const releases = useQuery("releases", getModReleases);
-
-    const latest_release = releases.data && releases.data[0];
+    const latest_release = useQuery("releases", getLatestModRelease);
 
     return (
         <>
@@ -50,7 +47,7 @@ const Home: NextPage = () => {
                     }
                     <CardLink
                         name="Download Mod"
-                        description={`Download the custom leaderboard client mod for SRXD ${latest_release?.tag_name &&`(version ${latest_release.tag_name})`}.`}
+                        description={`Download the custom leaderboard client mod for SRXD ${latest_release.data?.tag_name &&`(version ${latest_release.data?.tag_name})`}.`}
                         documentation="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll"
                     />
                 </div>

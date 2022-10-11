@@ -7,3 +7,8 @@ export const getModReleases = async () => {
         repo: "SRXDCustomLeaderboard"
     })).data;
 };
+
+export const getLatestModRelease = async () => {
+    const releases = await getModReleases();
+    return releases && releases[0]
+}
