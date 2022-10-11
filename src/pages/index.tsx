@@ -5,15 +5,9 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import { trpc } from "../utils/trpc";
-
-const octokit = new Octokit();
-
-
 
 const Home: NextPage = () => {
     const session = useSession();
-    const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
 
     const releases = useQuery("releases", getModReleases);
 
@@ -43,26 +37,23 @@ const Home: NextPage = () => {
                 <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
                     {
                         session.data?.user ?
-                            <TechnologyCard
+                            <CardLink
                                 name="Account / Get Started"
                                 description="Click here to get started! Manage your game authentication tokens here."
                                 documentation="/account"
                             /> :
-                            <TechnologyCard
+                            <CardLink
                                 name="Login / Sign Up"
                                 description="Login / sign up to get started!"
                                 documentation={`/api/auth/signin`}
                             />
                     }
-                    <TechnologyCard
+                    <CardLink
                         name="Download Mod"
                         description={`Download the custom leaderboard client mod for SRXD ${latest_release?.tag_name &&`(version ${latest_release.tag_name})`}.`}
                         documentation="https://github.com/SRXDModdingGroup/SRXDCustomLeaderboard/releases/latest/download/SRXDCustomLeaderboard.dll"
                     />
                 </div>
-                {/* <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
-                    {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
-                </div> */}
             </main>
         </>
     );
@@ -70,17 +61,17 @@ const Home: NextPage = () => {
 
 export default Home;
 
-type TechnologyCardProps = {
+type CardLinkProps = {
   name: string;
   description: string;
   documentation: string;
 };
 
-const TechnologyCard = ({
+const CardLink = ({
     name,
     description,
     documentation,
-}: TechnologyCardProps) => {
+}: CardLinkProps) => {
     return (
         <section className="card duration-500 motion-safe:hover:scale-105">
             <h2 className="text-lg">{name}</h2>
