@@ -8,7 +8,7 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
-import Header from "components/header";
+import Header from "components/Header";
 import { ThemeProvider } from "next-themes";
 import ScrollHandler from "components/scroll_handler";
 

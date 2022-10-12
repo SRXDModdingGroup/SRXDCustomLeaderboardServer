@@ -3,19 +3,23 @@ import { Disclosure, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import ThemeSwitch from "./themeswitch";
+import ThemeSwitch from "./ThemeSwitch";
+import { Route, routes } from "modules/routes";
+import { useRouter } from "next/router";
 
 const Header: FC = () => {
     const session = useSession();
-    const sessioned_navigation = session.data?.user ? [
-        { name: 'Account', href: '/account', current: false },
-        { name: 'Logout', href: '/api/auth/signout', current: false }
-    ] : [
-        { name: 'Login', href: '/api/auth/signin', current: false },
-    ];
-    const navigation = [
-        ...sessioned_navigation
-    ]
+    const logged_in = Boolean(session.data?.user);
+
+    const router = useRouter();
+    let current_route = undefined as Route | undefined;
+    const navigation = routes.filter(e => { 
+        e.current = e.href == router.asPath;
+        if (e.current) current_route = e;
+        if (!e.contexts?.length) return true;
+        if (logged_in && e.contexts?.includes("auth")) return true;
+        if (!logged_in && e.contexts?.includes("noauth")) return true;
+    });
 
     return (
         <Disclosure as="nav" className="fixed top-0 left-0 right-0 transition-all z-50 shadow-lg scroll0:shadow-none dark:bg-[#1C1B22] bg-white">
@@ -49,7 +53,7 @@ const Header: FC = () => {
                                                 href={item.href}
                                             >
                                                 <a 
-                                                    className="px-3 py-2 rounded-md text-sm text-inherit hover:tracking-[0.2em] transition-all"
+                                                    className={`px-3 py-2 rounded-md text-sm hover:tracking-[0.2em] ${item.current && "text-primary"} transition-all`}
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >
                                                     {item.name}
