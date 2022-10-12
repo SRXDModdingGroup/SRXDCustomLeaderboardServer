@@ -65,15 +65,15 @@ const Header: FC = () => {
                     <Disclosure.Panel className={`sm:hidden ${!open ? "max-h-0" : "max-h-96"} overflow-hidden transition-all`} static>
                         <div className="space-y-1 pt-2 pb-3">
                             {navigation.map((item) => (
-                                <Disclosure.Button
-                                    key={item.name}
-                                    as="a"
-                                    href={item.href}
-                                    className="block px-6 py-2 hover:text-primary transition-all"
-                                    aria-current={item.current ? 'page' : undefined}
-                                >
-                                    {item.name}
-                                </Disclosure.Button>
+                                <Link key={item.name} href={item.href} passHref>
+                                    <Disclosure.Button
+                                        as="a"
+                                        className="block px-6 py-2 hover:text-primary transition-all cursor-pointer"
+                                        aria-current={item.current ? 'page' : undefined}
+                                    >
+                                        {item.name}
+                                    </Disclosure.Button>
+                                </Link>
                             ))}
                             <ThemeSwitch><div className="block px-6 py-2 w-full">Toggle Theme</div></ThemeSwitch>
                         </div>
