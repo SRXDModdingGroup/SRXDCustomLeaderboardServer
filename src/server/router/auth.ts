@@ -47,6 +47,19 @@ export const authRouter = createRouter()
                 }
             })
 
+            if (client_token_exists?.id) {
+                try {
+                    await prisma.session.delete({
+                        where: {
+                            id: client_token_exists?.id
+                        }
+                    })
+                }
+                catch (e) {
+                    return client_token_exists
+                }
+            }
+            
             const key: string = await new Promise((resolve, reject) => {
                 generateKey("aes", { length: 128 }, (err, data) => {
                     if (err) {
@@ -57,28 +70,15 @@ export const authRouter = createRouter()
             });
             const sessionToken = "CLIENT-"+key;
             const expires = new Date();
-
-            if (!client_token_exists) {
-               
-                expires.setFullYear(expires.getFullYear() + 1)
-                
-                return await prisma.session.create({
-                    data: {
-                        userId: ctx.user.id,
-                        sessionToken,
-                        expires
-                    }
-                })
-            }
-
-            return prisma.session.update({
-                where: {
-                    id: client_token_exists.id
-                },
+            
+            expires.setFullYear(expires.getFullYear() + 1)
+            
+            return await prisma.session.create({
                 data: {
+                    userId: ctx.user.id,
                     sessionToken,
                     expires
                 }
-            });
+            })
         }
     });
