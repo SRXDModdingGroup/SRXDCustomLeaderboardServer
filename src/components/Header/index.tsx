@@ -22,7 +22,7 @@ const Header: FC = () => {
         if (!logged_in && e.contexts?.includes("noauth")) return true;
     });
 
-    const title = (current_route ? " | " + current_route.name : "") + "SRXDCustomLeaderboard";
+    const title = (current_route ? current_route.name + " | " : "") + "SRXDCustomLeaderboard";
 
     return (
         <>
