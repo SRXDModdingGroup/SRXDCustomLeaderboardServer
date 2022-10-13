@@ -7,7 +7,6 @@ import { useQuery } from "react-query";
 
 const Home: NextPage = () => {
     const session = useSession();
-
     const latest_release = useQuery("releases", getLatestModRelease);
 
     return (
