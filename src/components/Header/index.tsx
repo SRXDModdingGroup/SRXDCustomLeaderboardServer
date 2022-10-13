@@ -31,10 +31,10 @@ const Header: FC = () => {
                 <meta property="og:title" content={title} />
                 <meta property="og:type" content="website" />
             </Head>
-            <Disclosure as="nav" className="fixed top-0 left-0 right-0 transition-all z-50 shadow-lg scroll0:shadow-none dark:bg-[#1C1B22] bg-white">
+            <Disclosure as="nav" className="fixed top-0 left-0 right-0 transition-all z-50 dark:bg-[#1C1B22] bg-white">
                 {({open}) => (
                     <>
-                        <div className={`mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 sm:border-b-0 border-b-[1px] border-white/30`}>
+                        <div className={`mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 sm:border-b-0 border-b-[1px] border-white/30 sm:shadow-lg ${!open && "shadow scroll0:shadow-none transition-all xl:rounded rounded-t-none"}`}>
                             <div className="relative flex h-14 items-center justify-between">
                                 <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
                                     {/* Mobile menu button*/}
@@ -75,7 +75,7 @@ const Header: FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <Disclosure.Panel className={`sm:hidden ${!open ? "max-h-0" : "max-h-96"} overflow-hidden transition-all`} static>
+                        <Disclosure.Panel className={`sm:hidden ${!open ? "max-h-0" : "max-h-96 shadow-lg"} overflow-hidden transition-all`} static>
                             <div className="space-y-1 pt-2 pb-3">
                                 {navigation.map((item) => (
                                     <Link key={item.name} href={item.href} passHref>
