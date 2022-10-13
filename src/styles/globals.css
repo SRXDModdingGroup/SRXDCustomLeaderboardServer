@@ -4,7 +4,7 @@
 
 @layer base {
     .card {
-        @apply flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl
+        @apply flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl hover:shadow-2xl transition-all
     }
     .card > h1 {
         @apply text-xl
